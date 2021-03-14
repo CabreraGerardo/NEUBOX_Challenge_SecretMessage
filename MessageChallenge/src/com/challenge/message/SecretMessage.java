@@ -3,6 +3,8 @@ package com.challenge.message;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class SecretMessage {
 
@@ -31,15 +33,12 @@ public class SecretMessage {
 						message = scanner.nextLine();
 						break;
 				}
-				//System.out.println(scanner.nextLine());
 			}
 			scanner.close();
 			
 			message = deleteDuplicateLetters(message);
 			
-			System.out.println(message.contains(instruction1));
-			System.out.println(message.contains(instruction2));
-			
+			createFile(message.contains(instruction1), message.contains(instruction2));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -57,5 +56,28 @@ public class SecretMessage {
 	    else {
 	        return word.substring(0,1) + deleteDuplicateLetters(word.substring(1));
 	    }
+	}
+	
+	public static void createFile(boolean instruction1, boolean instruction2) {
+		try {
+		      File myObj = new File("D:\\message-result.txt");
+		      
+		      myObj.createNewFile();
+		      writeFile(instruction1 ? "Si" : "No", instruction2 ? "Si" : "No");		      
+		    } catch (IOException e) {
+		      e.printStackTrace();
+		    }
+	}
+	
+	public static void writeFile(String res1, String res2) {
+		try {
+	          FileWriter myWriter = new FileWriter("D:\\message-result.txt");
+	          myWriter.write(res1);
+	          myWriter.write("\n");
+	          myWriter.write(res2);
+	          myWriter.close();
+	        } catch (IOException e) {
+	          e.printStackTrace();
+	        }
 	}
 }
