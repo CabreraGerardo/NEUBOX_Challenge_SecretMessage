@@ -3,6 +3,9 @@ package com.challenge.message;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
+import javax.swing.JFileChooser;
+
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -10,35 +13,44 @@ public class SecretMessage {
 
 	public static void main(String[] args) {
 		try {
-			Scanner scanner = new Scanner(new File("D:/Mensaje.txt"));
-			String lengths = "";
-			String instruction1 = "";
-			String instruction2 = "";
-			String message = "";
-			
-			int i = 0;
-			while (scanner.hasNextLine()) {
-				i++;
-				switch(i) {
-					case 1:
-						lengths = scanner.nextLine();
-						break;
-					case 2:
-						instruction1 = scanner.nextLine();
-						break;
-					case 3:
-						instruction2 = scanner.nextLine();
-						break;
-					case 4:
-						message = scanner.nextLine();
-						break;
+
+	        JFileChooser chooser = new JFileChooser();
+	        int returnVal = chooser.showOpenDialog(null);
+	        if(returnVal != JFileChooser.APPROVE_OPTION) {
+	            System.out.println("File wasn't selected");
+	        }
+	        else
+	        {
+	        	Scanner scanner = new Scanner(chooser.getSelectedFile());
+				String lengths = "";
+				String instruction1 = "";
+				String instruction2 = "";
+				String message = "";
+				
+				int i = 0;
+				while (scanner.hasNextLine()) {
+					i++;
+					switch(i) {
+						case 1:
+							lengths = scanner.nextLine();
+							break;
+						case 2:
+							instruction1 = scanner.nextLine();
+							break;
+						case 3:
+							instruction2 = scanner.nextLine();
+							break;
+						case 4:
+							message = scanner.nextLine();
+							break;
+					}
 				}
-			}
-			scanner.close();
-			
-			message = deleteDuplicateLetters(message);
-			
-			createFile(message.contains(instruction1), message.contains(instruction2));
+				scanner.close();
+				
+				message = deleteDuplicateLetters(message);
+				
+				createFile(message.contains(instruction1), message.contains(instruction2));
+	        }
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
