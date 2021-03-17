@@ -72,18 +72,33 @@ public class SecretMessage {
 	
 	public static void createFile(boolean instruction1, boolean instruction2) {
 		try {
-		      File myObj = new File("D:\\message-result.txt");
-		      
-		      myObj.createNewFile();
-		      writeFile(instruction1 ? "Si" : "No", instruction2 ? "Si" : "No");		      
-		    } catch (IOException e) {
-		      e.printStackTrace();
-		    }
+			JFileChooser chooser = new JFileChooser(); 
+			chooser.setCurrentDirectory(new java.io.File("."));
+			chooser.setDialogTitle("Select message destination");
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			chooser.setAcceptAllFileFilterUsed(false);
+			
+			int returnVal = chooser.showOpenDialog(null);
+			String path = "";
+			if(returnVal == JFileChooser.APPROVE_OPTION) {
+				path = chooser.getSelectedFile().getPath();
+				File myObj = new File(path + "\\result.txt");
+			      
+			    myObj.createNewFile();
+			    writeFile(myObj, instruction1 ? "Si" : "No", instruction2 ? "Si" : "No");	
+			}
+			else {
+				System.out.println("No Selection ");
+			}	      
+	    } 
+		catch (IOException e) {
+			e.printStackTrace();
+	    }
 	}
 	
-	public static void writeFile(String res1, String res2) {
+	public static void writeFile(File file, String res1, String res2) {
 		try {
-	          FileWriter myWriter = new FileWriter("D:\\message-result.txt");
+	          FileWriter myWriter = new FileWriter(file.getPath());
 	          myWriter.write(res1);
 	          myWriter.write("\n");
 	          myWriter.write(res2);
